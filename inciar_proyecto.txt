@@ -1,0 +1,107 @@
+Creamos carpeta Bit-Music.
+	Dentro de ella creamos la carpeta back (contendrá toda la lógica de nuestro aplicativo)
+		Crearemos tres nuevas carpetas: control, codelo y rutas.
+			control
+			modelo
+			rutas
+		Dentro de la carpeta back, creamos nuestro archivo package.json (recordemos que lo creamos
+		desde la consola - cmd, visul studio code, git bash).
+			npm init -y
+
+		instalamos las librerías y paquetes que necesitemos:
+			express -> npm install express --save
+			mongoose -> npm install mongoose --save
+				Mongoose nos permite conectar nuestra BD con Node & Express
+			body-parser -> npm install body-parser --save
+				Permite analizar los parámetros que se envían por la URL
+			connect-multiparty -> npm install connect-multiparty --save
+				Permite guardar elementos multimedia en nuestra BD
+			nodemon -> npm install nodemon --save-dev
+				Reinicia la consola automáticamente
+
+
+
+
+--------------------------------------------------------------------------------------
+
+
+Estamos creando una API REST
+API - Application Programming Interface / Interfaz de Programación de Aplicaciones.
+	Arquitectura que permite a un desarrollador interactuar con los datos de una aplicación de forma
+	organizada.
+
+	Esta aplicación se encuentra alojada en la nuba (AWS / IBM Cloud.. etc) siendo totalmente
+	disponible para su consumo por parte de cualquier cliente (una aplicaición frontend como
+		lo puede ser una desarrollada en Angular).
+
+	Un ejemplo de una API es el inicio de sesión a través de una red social o cuenta de correo.
+
+	La API REST se caracteriza por manejar la información en formato JSON (JavaScript Object Notation)
+	ya que es un formato de texto sumamente ligero, compatible con cualquier lenguaje de programación.
+	Es el intercambio ideal de datos ya que nos permite un fácil acceso a cada una de las propiedades
+	(claves - "scripts":) para lograr extraer los datos que necesitemos ("nodemon index.js") 
+
+var miJson = {
+		"nombre": "Blanca",
+		"apellido": "Cubides",
+		"profesion": "Odontologa"
+	     }
+
+db.miColeccion.insert(miJson)
+
+var miJson = {
+		"nombre": "Stefhanny",
+		"apellido": "Pinto",
+		"profesion": "Diseñadora Gráfica"
+	     }
+
+localhost:3000/api/usuario/registro
+
+	console.log(miJson.nombre) = Blanca	
+
+		
+	REST -> Representational State Transfer (Transferencia de Estado Representacional)
+		arquitectura de diseño de aplicaciones en redes. Ofrece tecnologías complejas
+		a partir de los protocoles HTTP y HTTPS (HyperText Transfer Protocol).
+
+
+
+MVC 
+	(Model - View - Controller)  - Modelo vista controlador.
+	Es un patrón de diseño de un aplicativo que nos permite tener mayor organización en
+	nuestro código.
+
+	Se segmenta el aplicaitivo en 3 capas o partes:
+	-> Modelo: 
+		Es la representación en código de la estructura de nuestras tablas
+		o colecciones de nuestra base de datos.
+	-> Vista:
+		Hace referencia a todas las interfaces gráficas y sus correspondientes
+		estilos y elementos multimedia con los cuales interactuará el usuario.
+	-> Controlador:
+		Se encarga de recibir los datos que el usuario envía desde la vista,
+		procesarlos, validarlos y enviarlos al modelo para que se puedan guardar en la base de datos.
+		No solo permite manejar la lógica de guardar los datos; también permite consultar, actualizar
+		o eliminar ya que es el puente entre la BD (representada en el modelo) y  la vista.
+
+
+Buscar, descargar e instalar un programa llamado POSTMAN
+	Nos va a permitir consumir una API sin necesidad de tener un front. Esto es netamente a manera
+	de testing
+
+Martes -> Control, Modelo y Ruta de Usuario + Git
+Miércoles -> Control, Modelo y Ruta de Usuario + Git
+Jueves -> Angular + Git
+Viernes -> Angular + Git
+
+Lunes, Martes, Miércoles -> Integración Angular con Node & Express + Git
+Jueves 5 o Viernes 6
+
+Especificaciones Entregable #2 -> Bit-Music
+	* Registro Usuario
+	* login Usuario
+	* Actualización Usuario
+	* Subir & mostrar img usuario
+	* Front + Back
+
+	Si por tiempo alcanzamos podermos dar un plus de registro de canciones
