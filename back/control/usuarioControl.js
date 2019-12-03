@@ -1,6 +1,13 @@
 // Importando el modelo usuario para interactuar con el
 const Usuario = require('../modelo/usuario');
 
+//modulo File System -> 32/ modulo del nucle Node
+//Nos permite leer archivos externos como los puede ser html,css,js,jpg
+const fs = require('fs');
+
+//Modulo Path -> Nos permite analizar y evaluar la ruta de un archivo
+const path = require ('path');
+
 // req - request - peticion / res - response - respuesta
 function crearUsuario(req, res){
     // instanciar - usar el objeto modelo Usuario
@@ -97,10 +104,106 @@ function actualizarUsuario(req, res){
     });
 } 
 
+//Nueva linea de codigo - Funcion subir imagen del usuario
+function subirImg(req,res){
+   var usuarioId = req.params.id;
+   var nombreArchivo = "No ha subido nada...";
+
+   //Validar si efectivamente se esta enviando la img o el archivo y lo haremos a traves de un if 
+   //req.files == req.body
+   if (req.files){
+       //Vamos a ir analizando la ruta del archivo , el nombre del archivo y la extension (jpg,PNG,GIF...)
+       var rutaArchivo = req.files.imagen.path;
+       console.log( 'variable rutaArchivo:' + rutaArchivo);
+
+       // C:\\usuario\imagenes\miarchivo.jpg -- http:\\midominio.com\archivos\usuarios\miImagen.jpg
+       var partirArchivo = rutaArchivo.split('\\');
+       console.log('variable partirArchivo:'+partirArchivo);
+      //Siempre que se va a trabajar como este metodo se genera un array = ['http','midominio', ...]
+       var nombreArchivo = partirArchivo[2];
+       console.log('variable nombreArchivo:' + nombreArchivo);
+
+       var extensionImg = nombreArchivo.split('\.'); //array ['miImagen' , 'jpg'];
+       console.log('variable extensionImg' + extensionImg);
+
+       var extensionArchivo = extensionImg[1];
+       console.log('variable extensionArchivo:' + extensionArchivo);
+
+       /*
+       A traves de una expresion regularpodemos validar si dentro de una cadena 
+       existe algun caracter en especifico. En este ejemplo validamos si al final de la 
+       cadena existen los caracteres jpg, png, jpeg o gif
+       
+       Abrimos una expresion regular con /patron/ 
+       ^ - con el sombrerito indicamos que una cadena empiece por x caracter
+       ej:
+       */
+      
+      //Validar el formato del archivo a subir
+        if (extensionArchivo == 'png' || extensionArchivo == 'jpg'){
+            //Vamos a actualizar del usuario el campo imagen
+              Usuario.findByIdAndUpdate(usuarioId,{imagen:nombreArchivo},(err, imgUsuario)=>{
+                  if (err){
+                      res.status(500).send({
+                          message:"Error en el servidor"
+                      });
+                  }else{
+                      if(!imgUsuario){
+                          res.status(404).send({
+                              message:"No se pudo guardar la imagen"
+                          });
+                      }else{
+                          res.status(200).send({
+                              imagen: nombreArchivo,
+                              usuario: imgUsuario
+                          });
+                      }
+                  }
+              });
+        }else{
+            res.status(404).send({
+                message:"No ha subido ninguna imagen"
+            });
+        }
+    
+
+   }else{
+       res.status(404).send({
+        message: "No ha subido ningun archivo"
+       });
+   }
+}
+
+//NUEVA LINEA - funcion mostrar archivo
+//
+function mostrarArchivo(req,res){
+    // guardamos el nombre del archivo que estamos enviando en la url
+    var archivo = req.params.imageFile; //similar a req.params.id - localhost:4000/api/mostrar/:imageFile 
+    // verificando la carpeta archivos/usuarios para encontrar el archivo
+    var rutaArchivo = './archivos/usuarios/' + archivo;
+
+//Validamos si dentro de la carpeta archivos/usuario existe el archivo
+//exists -> metodo propio de file system (fs)
+//fs.exists('en donde quieres buscar' , (existe o no)=>{})
+    fs.exists (rutaArchivo,(exists)=>{
+        if(exists){
+            //sendFile -> propio del modulo FS permite enviar archivos como respuesta
+            //aca enviamos la imagen el  archivo como respuesta
+            res.sendFile(path.resolve(rutaArchivo));
+        }else{
+            res.status(404).send({
+            message: "No existe la imagen"
+        });
+    }
+    });
+}
+
 module.exports = {
     crearUsuario,
     login,
-    actualizarUsuario
+    actualizarUsuario,
+    subirImg,
+    mostrarArchivo
 };
 
 

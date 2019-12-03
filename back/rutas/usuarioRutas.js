@@ -17,6 +17,15 @@ var api = express.Router(); // cargamos el manejador de rutas de Express
     los provee el protocolo HTTP
 */
 
+//NUEVA LINEA
+//Importar la libreria connect-multiparty -subir los archivos multimedia a una BD
+
+var multipart = require('connect-multiparty');
+
+//Especificamos la ruta donde se van a guardar los archivos
+var subirImgDirectorio = multipart( {uploadDir:'./archivos/usuarios'} ); //Upload Directory
+
+
 // Por cada función que vayamos a crear debe existir una ruta
 // post('una ruta de acceso', una función a ejecutar)
 api.post('/registro', UsuarioControl.crearUsuario);
@@ -26,6 +35,14 @@ api.post('/loginUsuario', UsuarioControl.login);
 // PUT y DELETE es que necesitan tener especificados el id en la ruta
 api.put('/actualizar-usuario/:id', UsuarioControl.actualizarUsuario);
 
+//Usaremos el metodo post para actualizar el campo imagen ya que con put nos actualiza todo el registro
+//agregando un campo de mas que no queremos
+
+/*
+Usuario con imagen actualizado desde metodo put
+*/
+api.put('/subir-imagen-usuario/:id', subirImgDirectorio, UsuarioControl.subirImg);
+api.get('/obtener-imagen-usuario/:imageFile', UsuarioControl.mostrarArchivo);
 module.exports = api ; // 
 // MVW -> Modelo Vista Cualquiera / Model View Whatever (modelo, vista rutas)
 // aplicaciones menos robustas
